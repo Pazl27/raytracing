@@ -1,9 +1,9 @@
-#include <vector>
 #include <SDL2/SDL.h>
+#include <vector>
 
 #include <circle.hpp>
-#include <raytracer.hpp>
 #include <constants.hpp>
+#include <raytracer.hpp>
 
 std::vector<Ray> Raytracer::rays;
 

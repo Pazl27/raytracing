@@ -3,7 +3,7 @@
 
 class Game {
 public:
-    static void run();
+  static void run();
 };
 
 #endif

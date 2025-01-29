@@ -14,12 +14,11 @@ public:
   double get_y() const { return y; }
   double get_radius() const { return radius; }
   double get_speed() const { return speed; }
-  void set_x(double x) { this->x = x;}
-  void set_y(double y) { this->y = y;}
-  void set_speed(double speed) { this->speed = speed;}
+  void set_x(double x) { this->x = x; }
+  void set_y(double y) { this->y = y; }
+  void set_speed(double speed) { this->speed = speed; }
 
-
-  private:
+private:
   double x;
   double y;
   double radius;
