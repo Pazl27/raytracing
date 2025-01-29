@@ -21,7 +21,6 @@ void Game::run() {
   SDL_Surface *screen = SDL_GetWindowSurface(window);
   SDL_Rect eraser = {0, 0, WIDTH, HEIGHT};
 
-  // Raytracer raytracer;
   Circle circle = {200, 200, 80};
   Circle shadow_circle = {550, 300, 120};
 
