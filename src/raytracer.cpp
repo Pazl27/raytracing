@@ -5,6 +5,8 @@
 #include <raytracer.hpp>
 #include <constants.hpp>
 
+std::vector<Ray> Raytracer::rays;
+
 void Raytracer::generate_rays(Circle circle) {
   rays.clear();
 

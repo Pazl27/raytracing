@@ -21,12 +21,12 @@ void Game::run() {
   SDL_Surface *screen = SDL_GetWindowSurface(window);
   SDL_Rect eraser = {0, 0, WIDTH, HEIGHT};
 
-  Raytracer raytracer;
+  // Raytracer raytracer;
   Circle circle = {200, 200, 80};
   Circle shadow_circle = {550, 300, 120};
 
   std::vector<Ray> rays;
-  raytracer.generate_rays(circle);
+  Raytracer::generate_rays(circle);
 
   bool running = true;
   SDL_Event event;
@@ -43,14 +43,14 @@ void Game::run() {
       if (event.type == SDL_MOUSEMOTION && event.motion.state != 0) {
         circle.set_x(event.motion.x);
         circle.set_y(event.motion.y);
-        raytracer.generate_rays(circle);
+        Raytracer::generate_rays(circle);
       }
     }
 
     shadow_circle.move();
 
     SDL_FillRect(screen, &eraser, COLOR_BLACK);
-    raytracer.fill_rays(screen, COLOR_RAY, shadow_circle);
+    Raytracer::fill_rays(screen, COLOR_RAY, shadow_circle);
     circle.fill(screen, COLOR_WHITE);
     shadow_circle.fill(screen, COLOR_WHITE);
 
