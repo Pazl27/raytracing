@@ -3,65 +3,50 @@
 #include <math.h>
 #include <vector>
 
-#define WIDTH 1200
-#define HEIGHT 600
-#define COLOR_WHITE 0xFFFFFFFF
-#define COLOR_BLACK 0x00000000
-#define COLOR_RAY 0xf5c31d
-#define RAY_THICKNESS 2
-#define RAY_COUNT 500
+#include <constants.hpp>
+#include <circle.hpp>
+#include <ray.hpp>
 
-struct Circle {
-  double x, y, radius;
-  double speed;
-};
-
-struct Ray {
-  double x_start, y_start;
-  double angle;
-};
-
-void fill_circle(SDL_Surface *screen, struct Circle circle, Uint32 color) {
-  double radius_squared = pow(circle.radius, 2);
-  for (double x = circle.x - circle.radius; x <= circle.x + circle.radius;
+void fill_circle(SDL_Surface *screen, Circle circle, Uint32 color) {
+  double radius_squared = pow(circle.get_radius(), 2);
+  for (double x = circle.get_x() - circle.get_radius(); x <= circle.get_x() + circle.get_radius();
        x++) {
-    for (double y = circle.y - circle.radius; y <= circle.y + circle.radius;
+    for (double y = circle.get_y() - circle.get_radius(); y <= circle.get_y() + circle.get_radius();
          y++) {
-      double distance_squared = pow(x - circle.x, 2) + pow(y - circle.y, 2);
+      double distance_squared = pow(x - circle.get_x(), 2) + pow(y - circle.get_y(), 2);
       if (distance_squared < radius_squared) {
         SDL_Rect pixel =
-            (SDL_Rect){static_cast<int>(x), static_cast<int>(y), RAY_THICKNESS, RAY_THICKNESS};
+            (SDL_Rect){static_cast<int>(x), static_cast<int>(y), RAY_THICKNESS, 1};
         SDL_FillRect(screen, &pixel, color);
       }
     }
   }
 }
 
-void generate_rays(struct Circle circle, std::vector<Ray> &rays) {
+void generate_rays(Circle circle, std::vector<Ray> &rays) {
   rays.clear();
 
   for (int i = 0; i < RAY_COUNT; i++) {
     double angle = (static_cast<double>(i) / RAY_COUNT) * 2 * M_PI;
-    struct Ray ray = {circle.x, circle.y, angle};
+    struct Ray ray = {circle.get_x(), circle.get_y(), angle};
     rays.push_back(ray);
   }
 }
 
-void fill_rays(SDL_Surface *screen, std::vector<Ray> &rays, Uint32 color,
-               struct Circle object) {
+void fill_rays(SDL_Surface *screen, std::vector<Ray> &rays, Uint32 color, Circle object) {
 
-  double radius_squared = pow(object.radius, 2);
+  double radius_squared = pow(object.get_radius(), 2);
   for (int i = 0; i < rays.size(); i++) {
     struct Ray ray = rays[i];
     bool end_of_screen = false;
     bool object_hit = false;
 
     double step = 1;
-    double x_draw = ray.x_start;
-    double y_draw = ray.y_start;
+    double x_draw = ray.get_x_start();
+    double y_draw = ray.get_y_start();
     while (!end_of_screen && !object_hit) {
-      x_draw += step * cos(ray.angle);
-      y_draw += step * sin(ray.angle);
+      x_draw += step * cos(ray.get_angle());
+      y_draw += step * sin(ray.get_angle());
 
       SDL_Rect pixel = {static_cast<int>(x_draw), static_cast<int>(y_draw), 2,
                         2};
@@ -71,7 +56,7 @@ void fill_rays(SDL_Surface *screen, std::vector<Ray> &rays, Uint32 color,
         end_of_screen = true;
       }
       double distance_squared =
-          pow(x_draw - object.x, 2) + pow(y_draw - object.y, 2);
+          pow(x_draw - object.get_x(), 2) + pow(y_draw - object.get_y(), 2);
       if (distance_squared < radius_squared) {
         break;
         object_hit = true;
@@ -113,8 +98,8 @@ int main() {
         }
       }
       if (event.type == SDL_MOUSEMOTION && event.motion.state != 0) {
-        circle.x = event.motion.x;
-        circle.y = event.motion.y;
+        circle.set_x(event.motion.x);
+        circle.set_y(event.motion.y);
         generate_rays(circle, rays);
       }
     }
@@ -124,9 +109,9 @@ int main() {
     fill_circle(screen, circle, COLOR_WHITE);
     fill_circle(screen, shadow_circle, COLOR_WHITE);
 
-    shadow_circle.y += speed;
-    if (shadow_circle.y + shadow_circle.radius > HEIGHT ||
-        shadow_circle.y - shadow_circle.radius < 0) {
+    shadow_circle.set_speed(shadow_circle.get_y() + speed);
+    if (shadow_circle.get_y() + shadow_circle.get_radius() > HEIGHT ||
+        shadow_circle.get_y() - shadow_circle.get_radius() < 0) {
       speed *= -1;
     }
 

@@ -1,0 +1,14 @@
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
+
+#define WIDTH 1200
+#define HEIGHT 600
+
+#define COLOR_WHITE 0xFFFFFFFF
+#define COLOR_BLACK 0x00000000
+#define COLOR_RAY 0xf5c31d
+
+#define RAY_THICKNESS 2
+#define RAY_COUNT 500
+
+#endif
