@@ -8,6 +8,7 @@ public:
   Circle(double x, double y, double radius);
 
   void fill(SDL_Surface *screen, Uint32 color);
+  void move();
 
   double get_x() const { return x; }
   double get_y() const { return y; }

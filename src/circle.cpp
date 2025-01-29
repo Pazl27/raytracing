@@ -20,3 +20,12 @@ void Circle::fill(SDL_Surface *screen, Uint32 color) {
     }
   }
 }
+
+void Circle::move() {
+    this->set_y(this->get_y() + this->get_speed()); 
+
+    if (this->get_y() + this->get_radius() >= HEIGHT || this->get_y() - this->get_radius() <= 0) {
+        this->set_speed(-this->get_speed()); 
+    }
+}
+
