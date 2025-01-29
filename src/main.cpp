@@ -7,22 +7,6 @@
 #include <circle.hpp>
 #include <ray.hpp>
 
-void fill_circle(SDL_Surface *screen, Circle circle, Uint32 color) {
-  double radius_squared = pow(circle.get_radius(), 2);
-  for (double x = circle.get_x() - circle.get_radius(); x <= circle.get_x() + circle.get_radius();
-       x++) {
-    for (double y = circle.get_y() - circle.get_radius(); y <= circle.get_y() + circle.get_radius();
-         y++) {
-      double distance_squared = pow(x - circle.get_x(), 2) + pow(y - circle.get_y(), 2);
-      if (distance_squared < radius_squared) {
-        SDL_Rect pixel =
-            (SDL_Rect){static_cast<int>(x), static_cast<int>(y), RAY_THICKNESS, 1};
-        SDL_FillRect(screen, &pixel, color);
-      }
-    }
-  }
-}
-
 void generate_rays(Circle circle, std::vector<Ray> &rays) {
   rays.clear();
 
@@ -106,8 +90,8 @@ int main() {
 
     SDL_FillRect(screen, &eraser, COLOR_BLACK);
     fill_rays(screen, rays, COLOR_RAY, shadow_circle);
-    fill_circle(screen, circle, COLOR_WHITE);
-    fill_circle(screen, shadow_circle, COLOR_WHITE);
+    circle.fill(screen, COLOR_WHITE);
+    shadow_circle.fill(screen, COLOR_WHITE);
 
     shadow_circle.set_speed(shadow_circle.get_y() + speed);
     if (shadow_circle.get_y() + shadow_circle.get_radius() > HEIGHT ||
