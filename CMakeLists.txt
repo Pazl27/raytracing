@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
 project(Raytracing)
 
+# Set default build type to Debug if not specified
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+endif()
+
 # compiler commands
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
@@ -21,9 +26,10 @@ file(GLOB_RECURSE HEADER_FILES
 # Add the executable
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
-# Set the output directory for the executable
+# Set the output directory for the executable based on the build type
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/target
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/debug
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/release
 )
 
 # Variables for Paths of External Libraries
@@ -43,7 +49,8 @@ target_link_directories(${PROJECT_NAME}
     PRIVATE ${SDL2_ROOT_DIR}/src
 )
 
-# Link SDL2 library to the target (This is the missing part)
+# Link SDL2 library to the target
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE SDL2
 )
+

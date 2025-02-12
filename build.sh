@@ -2,16 +2,16 @@
 
 build() {
     if [ ! -d "build" ]; then
-        mkdir build
+        mkdir build 
     fi
     cd build
-    cmake ..
-    make
+    cmake -DCMAKE_BUILD_TYPE=Debug ..
+    cmake --build . --config Debug
 }
 
 run() {
     build
-    ./target/Raytracing
+    ./debug/Raytracing
 }
 
 if [ "$1" == "run" ]; then
